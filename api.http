@@ -1,0 +1,6 @@
+@cat_apitest = http://localhost:5002
+
+GET {{cat_apitest}}/
+Accept: application/json
+
+###
