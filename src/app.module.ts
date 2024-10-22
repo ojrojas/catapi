@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DevtoolsModule } from '@nestjs/devtools-integration';
 import { ConfigModule } from '@nestjs/config';
 import { CatService } from './core/services/cat/cat.service';
 import { CatController } from './controllers/cat.controller';
+import { BaseMessageMiddleware } from './core/middlewares/basemessage.middleware';
 
 @Module({
   imports: [
@@ -16,4 +17,8 @@ import { CatController } from './controllers/cat.controller';
   controllers: [AppController, CatController],
   providers: [AppService, CatService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(BaseMessageMiddleware).forRoutes("cats")
+  }
+}

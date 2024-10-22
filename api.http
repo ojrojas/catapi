@@ -1,6 +1,27 @@
 @cat_apitest = http://localhost:5002
 
-GET {{cat_apitest}}/
+GET {{cat_apitest}}/cats
 Accept: application/json
+Content-Type: application/json
 
 ###
+
+GET {{cat_apitest}}/cats
+Accept: application/json
+Content-Type: application/json
+
+
+###
+POST {{cat_apitest}}/cats
+Accept: application/json
+Content-Type: application/json
+
+{
+    "cat" : {
+    "id": "fadsfasdfasd",
+    "name": "michi",
+    "color": "white",
+    "age": 4,
+    "type": "default"
+    }
+}

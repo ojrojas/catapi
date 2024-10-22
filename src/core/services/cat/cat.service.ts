@@ -1,32 +1,49 @@
 import { Injectable } from '@nestjs/common';
 import { ICatService } from './icat.service';
-import { CreateCatRequest } from 'src/core/dtos/cats/createcat.request';
-import { CreateCatResponse } from 'src/core/dtos/cats/createcat.response';
-import { ICat } from 'src/core/models/cat.model';
-import { GetAllCatsRequest } from 'src/core/dtos/cats/getallcats.request';
-import { GetAllCatsResponse } from 'src/core/dtos/cats/getallcats.response';
+import { CreateCatRequest } from './../../dtos/cats/createcat.request';
+import { CreateCatResponse } from './../../dtos/cats/createcat.response';
+import { ICat } from './../../models/cat.model';
+import { GetAllCatsResponse } from './../../dtos/cats/getallcats.response';
 
 @Injectable()
 export class CatService implements ICatService {
+    
+    GetCatsByIdsAsync(ids: []): GetAllCatsResponse {
+        let result =  this.cats.filter((x) => {
+            return this.cats.indexOf(x) != -1;
+        });
 
-    cats: ICat[]= [];
+        let response = new GetAllCatsResponse();
+        response.cats = result;
+        return response;
+    }
+
+    cats: ICat[] = [];
 
     GetCatByIdAsync(id: string): ICat {
-        throw new Error('Method not implemented.');
+        return this.cats.find(x => x.id === id);
     }
-    GetAllCatsAsync(request: GetAllCatsRequest): GetAllCatsResponse {
-        let response = new GetAllCatsResponse(request.CorrelationId());
+
+    GetAllCatsAsync(): GetAllCatsResponse {
+        let response = new GetAllCatsResponse();
         response.cats = this.cats;
         return response;
     }
+
     UpdateCatAsync(cat: ICat): ICat {
-        throw new Error('Method not implemented.');
+        let index = this.cats.findIndex(x => x.id == cat.id);
+        this.cats[index] = cat;
+        return cat;
     }
+
     DeleteCatAsync(id: string): boolean {
-        throw new Error('Method not implemented.');
+        let index = this.cats.findIndex(x => x.id == id);
+        this.cats.splice(index, 1);
+        return true;
     }
+
     CreateCatAsync(request: CreateCatRequest): CreateCatResponse {
-        let response = new CreateCatResponse(request.CorrelationId());
+        let response = new CreateCatResponse();
         this.cats.push(request.cat);
         response.cat = request.cat;
 
